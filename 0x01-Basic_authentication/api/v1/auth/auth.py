@@ -17,8 +17,7 @@ class Auth:
             return True
         elif path in excluded_paths or path + '/' in excluded_paths:
             return False
-        elif path not in excluded_paths or path + '/' not in excluded_paths:
-            return True
+        return True
 
     def authorization_header(self, request=None) -> str:
         """Method that checks if a request has Authorization header"""
