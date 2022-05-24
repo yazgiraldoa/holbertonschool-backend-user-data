@@ -4,7 +4,6 @@ Class BasicAuth.
 """
 import base64
 from typing import Tuple, TypeVar
-from flask import request
 from api.v1.auth.auth import Auth
 
 
@@ -12,6 +11,9 @@ class BasicAuth(Auth):
     """
     Class BasicAuth
     """
+
+    def __init__(self):
+        super().__init__()
 
     def extract_base64_authorization_header(
                                             self,
