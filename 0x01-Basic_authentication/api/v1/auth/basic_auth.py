@@ -5,6 +5,8 @@ Class BasicAuth.
 import base64
 from typing import Tuple, TypeVar
 from api.v1.auth.auth import Auth
+from models.base import Base
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -58,4 +60,17 @@ class BasicAuth(Auth):
                                      user_pwd: str
                                     ) -> TypeVar('User'):
         """Method that returns the User instance based on email and password"""
-        pass
+        if not user_email or not isinstance(user_email, str) or \
+           not user_pwd or not isinstance(user_pwd, str):
+            return None
+
+        user = User()
+
+        u = user.search({"email": user_email})
+        if not u:
+            return None
+        p = u[0].is_valid_password(user_pwd)
+        if not p:
+            return None
+
+        return u[0]
