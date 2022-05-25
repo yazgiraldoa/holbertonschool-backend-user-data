@@ -5,7 +5,6 @@ Class BasicAuth.
 import base64
 from typing import Tuple, TypeVar
 from api.v1.auth.auth import Auth
-from models.base import Base
 from models.user import User
 
 
@@ -74,3 +73,12 @@ class BasicAuth(Auth):
             return None
 
         return u[0]
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Method that retrieves the User instance for a request"""
+        auth = Auth()
+        auth_header = auth.authorization_header(request)
+        token = self.extract_base64_authorization_header(auth_header)
+        decoded_token = self.decode_base64_authorization_header(token)
+        cred = self.extract_user_credentials(decoded_token)
+        return self.user_object_from_credentials(cred[0], cred[1])
